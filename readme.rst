@@ -1,317 +1,210 @@
+# Sistem Informasi Apotek (Apotek App)
 
-<!doctype html>
+Sistem Informasi Apotek adalah aplikasi berbasis web yang dirancang untuk membantu mengelola operasional harian sebuah apotek atau klinik. Aplikasi ini menyediakan fungsionalitas manajemen data obat, stok, transaksi penjualan, pengguna, hingga laporan, dengan pembagian akses berdasarkan peran (role) pengguna.
 
-<html
-  lang="en"
-  class="light-style layout-navbar-fixed layout-menu-fixed layout-compact"
-  dir="ltr"
-  data-theme="theme-default"
-  data-assets-path="assets/"
-  data-template="vertical-menu-template-starter"
-  data-style="light">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+## Daftar Isi
+- [Fitur Utama](#fitur-utama)
+- [Teknologi yang Digunakan](#teknologi-yang-digunakan)
+- [Struktur Database](#struktur-database)
+- [Instalasi](#instalasi)
+  - [Persyaratan Sistem](#persyaratan-sistem)
+  - [Langkah-langkah Instalasi](#langkah-langkah-instalasi)
+- [Penggunaan Aplikasi](#penggunaan-aplikasi)
+  - [Login](#login)
+  - [Peran Pengguna](#peran-pengguna)
+- [Fitur Unggulan](#fitur-unggulan)
+- [Kontributor](#kontributor)
+- [Lisensi](#lisensi)
 
-    <title>Page 1 - Starter Kit | Vuexy - Bootstrap Admin Template</title>
+## Fitur Utama
 
-    <meta name="description" content="" />
+Sistem ini memiliki fitur-fitur komprehensif yang dibagi berdasarkan peran pengguna:
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/img/favicon/favicon.ico" />
+### 1. Role: Admin 🧑‍💼
+Admin memiliki kendali penuh atas seluruh sistem.
+- **Dashboard:** Ringkasan total stok obat, obat menipis, jumlah user, dan grafik transaksi bulanan.
+- **Manajemen User:** Tambah, edit, dan hapus user (admin, kasir, apoteker).
+- **Data Obat:** Kelola semua data obat (tambah, edit, hapus), lihat stok.
+- **Kategori Obat:** Tambah, edit, dan hapus kategori obat (misal: Antibiotik, Vitamin).
+- **Jenis Obat:** Tambah, edit, dan hapus jenis bentuk obat (misal: Tablet, Sirup, Kapsul).
+- **Stok Obat:** Lihat semua stok terkini, filter stok menipis, atau obat kadaluarsa.
+- **Histori Stok Masuk:** Melihat histori penerimaan obat dari suplier.
+- **Suplier:** Kelola data pemasok (tambah, edit, hapus suplier).
+- **Laporan Penjualan:** Melihat laporan transaksi penjualan oleh kasir dalam periode tertentu, dapat diekspor ke PDF.
+- **Log Aktivitas:** Memantau semua aktivitas user (login, input data, edit, hapus) untuk keamanan sistem.
+- **Pengaturan Sistem:** Atur profil klinik, batas minimal stok, logo, dan pengaturan umum lainnya.
+- **Cetak Semua QR Code:** Mencetak daftar QR Code semua obat.
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&ampdisplay=swap"
-      rel="stylesheet" />
+### 2. Role: Apoteker 🧑‍⚕️
+Apoteker bertanggung jawab atas manajemen inventori obat dan pergerakan stok.
+- **Dashboard:** Ringkasan total jenis obat, obat menipis, jumlah stok masuk hari ini, dan status kadaluarsa.
+- **Data Obat:** Lihat dan edit informasi obat (tanpa hapus).
+- **Input Stok Masuk:** Input kedatangan obat baru dari suplier.
+- **Stok Obat:** Melihat semua stok terkini, status menipis, dan filter berdasarkan kategori/jenis.
+- **Scan QR Obat:** Scan QR Code obat untuk mengurangi stok (pergerakan internal, bukan penjualan).
+- **Obat Kadaluarsa:** Lihat daftar obat yang akan atau sudah kedaluwarsa.
+- **Laporan Obat Masuk:** Lihat & ekspor histori obat masuk dari suplier ke PDF.
+- **Cetak Semua QR Code:** Mencetak daftar QR Code semua obat.
 
-    <link rel="stylesheet" href="assets/vendor/fonts/tabler-icons.css" />
-    <!-- <link rel="stylesheet" href="assets/vendor/fonts/fontawesome.css" /> -->
-    <!-- <link rel="stylesheet" href="assets/vendor/fonts/flag-icons.css" /> -->
+### 3. Role: Kasir 💵
+Kasir bertanggung jawab atas proses transaksi penjualan dan pencatatan riwayat transaksi.
+- **Dashboard:** Menampilkan total transaksi hari ini, total pemasukan, dan shortcut ke transaksi baru.
+- **Transaksi Penjualan:** Halaman untuk melakukan transaksi penjualan: scan QR / input manual / pilih obat dari daftar → isi jumlah → total → input pembayaran → simpan transaksi.
+- **Riwayat Transaksi:** Menampilkan daftar transaksi yang pernah dilakukan oleh kasir tersebut.
+- **Cetak Struk:** Cetak ulang struk penjualan berdasarkan ID transaksi (otomatis setelah pembayaran).
+- **Laporan Penjualan:** Melihat dan mengekspor transaksi pribadi per hari/bulan ke PDF.
 
-    <!-- Core CSS -->
+## Teknologi yang Digunakan
+- **Framework:** CodeIgniter 3
+- **Bahasa Pemrograman:** PHP 5.6 (kompatibilitas penuh)
+- **Database:** MySQL / MariaDB
+- **Frontend Framework:** Vuexy Admin Template (Bootstrap 5)
+- **JavaScript Libraries:**
+  - jQuery
+  - Select2 (untuk dropdown interaktif)
+  - Instascan (untuk QR Code scanning via webcam)
+  - Chart.js (untuk grafik di dashboard)
+  - DataTables (untuk tabel data interaktif)
+  - Dompdf (untuk PDF generation)
+  - random_compat (polyfill untuk `random_bytes()` di PHP 5)
 
-    <link rel="stylesheet" href="assets/vendor/css/rtl/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="assets/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
+## Struktur Database
+Aplikasi ini menggunakan database `db_apotek` dengan tabel-tabel berikut:
+- `user`: Pengelolaan pengguna (admin, apoteker, kasir).
+- `obat`: Data master obat.
+- `jenis_obat`: Kategori jenis bentuk obat.
+- `kategori_obat`: Kategori fungsional obat.
+- `suplier`: Data pemasok obat.
+- `stok_masuk`: Riwayat penerimaan stok.
+- `detail_penjualan`: Detail item dalam setiap penjualan.
+- `penjualan`: Data transaksi penjualan utama.
+- `log_aktivitas`: Catatan aktivitas pengguna.
+- `password_resets`: Untuk fitur reset password.
+- `pengaturan_sistem`: Konfigurasi umum aplikasi.
 
-    <link rel="stylesheet" href="assets/css/demo.css" />
+*Anda dapat menemukan skema database lengkapnya di file `database/db_apotek.sql` (buat file ini dan paste SQL schema di sana).*
 
-    <!-- Vendors CSS -->
-    <link rel="stylesheet" href="assets/vendor/libs/node-waves/node-waves.css" />
+## Instalasi
 
-    <link rel="stylesheet" href="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+### Persyaratan Sistem
+- Web server (Apache / Nginx)
+- PHP 5.6 (dengan ekstensi `php_mysql`, `php_gd2`, `php_openssl`, `php_mbstring`, `php_json` aktif)
+- MySQL / MariaDB
+- Composer (opsional, jika Anda ingin menggunakan Autoloading PSR-4 untuk library tertentu, namun instalasi manual juga didukung).
+- Koneksi internet stabil (untuk CDN dan update library).
+- **PENTING: Untuk fitur scan QR Code dengan kamera, web server harus diakses melalui HTTPS, meskipun di localhost.** (Konfigurasi SSL lokal di XAMPP/WAMP sangat disarankan).
 
-    <!-- Page CSS -->
+### Langkah-langkah Instalasi
 
-    <!-- Helpers -->
-    <script src="assets/vendor/js/helpers.js"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+1.  **Clone Repositori:**
+    ```bash
+    git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
+    cd your-repo-name # Masuk ke folder proyek
+    ```
+    *(Ganti `your-username/your-repo-name` dengan username dan nama repositori GitHub Anda)*
 
-    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-    <script src="assets/vendor/js/template-customizer.js"></script>
+2.  **Konfigurasi Web Server:**
+    * Pindahkan seluruh folder proyek ke dalam direktori `htdocs` (untuk XAMPP) atau `www` (untuk WAMP) di web server Anda.
+    * Pastikan `mod_rewrite` aktif di Apache dan file `.htaccess` CodeIgniter berfungsi untuk *clean URLs*.
 
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="assets/js/config.js"></script>
-  </head>
+3.  **Konfigurasi Database:**
+    * Buat database baru di MySQL/MariaDB (misal: `db_apotek`).
+    * Impor skema database dari file `database/db_apotek.sql` (buat file ini dengan skema yang sudah kita diskusikan) ke database yang baru dibuat.
 
-  <body>
-    <!-- Layout wrapper -->
-    <div class="layout-wrapper layout-content-navbar">
-      <div class="layout-container">
-        <!-- Menu -->
+4.  **Konfigurasi CodeIgniter:**
+    * Buka `application/config/database.php` dan sesuaikan pengaturan database Anda:
+        ```php
+        'hostname' => 'localhost',
+        'username' => 'your_db_user', // Ganti dengan username database Anda
+        'password' => 'your_db_password', // Ganti dengan password database Anda
+        'database' => 'db_apotek',
+        'dbdriver' => 'mysqli',
+        // ...
+        ```
+    * Buka `application/config/config.php` dan sesuaikan `base_url`:
+        ```php
+        $config['base_url'] = 'http://localhost/apoteker/'; // Sesuaikan dengan URL proyek Anda
+        // Jika menggunakan HTTPS lokal, ubah menjadi:
+        // $config['base_url'] = 'https://localhost/apoteker/';
+        ```
+    * Di `application/config/config.php`, atur konfigurasi CSRF:
+        ```php
+        $config['csrf_protection'] = TRUE;
+        $config['csrf_token_name'] = 'csrf_test_name'; // Bisa diganti
+        $config['csrf_cookie_name'] = 'csrf_cookie_name'; // Bisa diganti
+        $config['csrf_expire'] = 7200; // 2 jam
+        $config['csrf_regenerate'] = FALSE; // Penting untuk kompatibilitas AJAX PHP 5
+        $config['csrf_exclude_uris'] = array(); // Tambahkan URI yang tidak butuh CSRF jika ada
+        ```
+    * Di `application/config/autoload.php`, pastikan library dan helper berikut dimuat:
+        ```php
+        $autoload['libraries'] = array('database', 'session', 'form_validation', 'email', 'ciqrcode', 'ci_dompdf');
+        $autoload['helper'] = array('url', 'form', 'auth_helper');
+        ```
 
-        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-          <div class="app-brand demo">
-            <a href="index.html" class="app-brand-link">
-              <span class="app-brand-logo demo">
-                <svg width="32" height="22" viewBox="0 0 32 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M0.00172773 0V6.85398C0.00172773 6.85398 -0.133178 9.01207 1.98092 10.8388L13.6912 21.9964L19.7809 21.9181L18.8042 9.88248L16.4951 7.17289L9.23799 0H0.00172773Z"
-                    fill="#7367F0" />
-                  <path
-                    opacity="0.06"
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M7.69824 16.4364L12.5199 3.23696L16.5541 7.25596L7.69824 16.4364Z"
-                    fill="#161616" />
-                  <path
-                    opacity="0.06"
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M8.07751 15.9175L13.9419 4.63989L16.5849 7.28475L8.07751 15.9175Z"
-                    fill="#161616" />
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M7.77295 16.3566L23.6563 0H32V6.88383C32 6.88383 31.8262 9.17836 30.6591 10.4057L19.7824 22H13.6938L7.77295 16.3566Z"
-                    fill="#7367F0" />
-                </svg>
-              </span>
-              <span class="app-brand-text demo menu-text fw-bold">Vuexy</span>
-            </a>
+5.  **Instalasi Library Pihak Ketiga (Manual):**
+    * **`phpqrcode`:**
+        * Unduh `phpqrcode` dari [https://github.com/phpqrcode/phpqrcode/releases](https://github.com/phpqrcode/phpqrcode/archive/refs/tags/v2.0.20.zip) (atau versi `v2.0.x`).
+        * Ekstrak dan letakkan folder `phpqrcode-v2.0.20/qrlib.php` ke `application/libraries/phpqrcode/qrlib.php`. Pastikan path-nya benar di `CI_QRcode.php`.
+    * **`dompdf`:**
+        * Unduh `dompdf` versi 0.8.x dari [https://github.com/dompdf/dompdf/releases](https://github.com/dompdf/dompdf/archive/refs/tags/v0.8.6.zip).
+        * Ekstrak dan letakkan folder `dompdf-0.8.6` ke `application/libraries/dompdf/`.
+    * **`random_compat`:**
+        * Unduh `random_compat` dari [https://github.com/paragonie/random_compat/releases](https://github.com/paragonie/random_compat/archive/refs/tags/v2.0.20.zip) (atau versi `v2.0.x`).
+        * Ekstrak dan letakkan folder `lib` ke `application/libraries/random_compat_lib/`.
+    * **`instascan.min.js`:**
+        * Unduh `instascan.min.js` dari [https://raw.githack.com/schmich/instascan-umd/master/dist/instascan.min.js](https://raw.githack.com/schmich/instascan-umd/master/dist/instascan.min.js).
+        * Letakkan di `assets/js/vendor/instascan.min.js`.
+    * **`beep.mp3`:**
+        * Siapkan file suara `beep.mp3` dan letakkan di `assets/sounds/beep.mp3`.
 
-            <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
-              <i class="ti menu-toggle-icon d-none d-xl-block align-middle"></i>
-              <i class="ti ti-x d-block d-xl-none ti-md align-middle"></i>
-            </a>
-          </div>
+6.  **Buat Akun Admin Pertama:**
+    * Akses phpMyAdmin atau client SQL Anda.
+    * Jalankan query berikut untuk membuat akun admin:
+    ```sql
+    INSERT INTO `user` (`uuid_user`, `nama_user`, `username`, `password`, `role`, `email`, `created_at`) VALUES
+    (UUID(), 'Administrator Apotek', 'admin', '$2y$10$WzQ0EmGf9K2PoyMG4EwbEOzJYrM6LO3CwShlP3i/8DhFi0Cg8dLOe', 'admin', 'admin@apotek.com', NOW());
+    ```
+    *(Ganti `password` dengan hash password yang Anda generate sendiri untuk keamanan! Gunakan `password_hash('password_anda', PASSWORD_DEFAULT)` di PHP)*
+    * **Login dengan username `admin` dan password yang Anda atur.**
 
-          <div class="menu-inner-shadow"></div>
+7.  **Konfigurasi HTTPS Lokal (Jika menggunakan fitur kamera):**
+    * Ikuti panduan XAMPP/WAMP untuk mengaktifkan SSL lokal. Ini penting agar browser mengizinkan akses kamera di `https://localhost`.
+    * Setelah dikonfigurasi, akses aplikasi Anda via `https://localhost/apoteker/`.
 
-          <ul class="menu-inner py-1">
-            <!-- Page -->
-            <li class="menu-item active">
-              <a href="index.html" class="menu-link">
-                <i class="menu-icon tf-icons ti ti-smart-home"></i>
-                <div data-i18n="Page 1">Page 1</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="page-2.html" class="menu-link">
-                <i class="menu-icon tf-icons ti ti-app-window"></i>
-                <div data-i18n="Page 2">Page 2</div>
-              </a>
-            </li>
-          </ul>
-        </aside>
-        <!-- / Menu -->
+8.  **Jalankan Aplikasi:**
+    * Buka browser Anda dan navigasi ke URL proyek Anda (misal: `http://localhost/apoteker/` atau `https://localhost/apoteker/`).
 
-        <!-- Layout container -->
-        <div class="layout-page">
-          <!-- Navbar -->
+## Penggunaan Aplikasi
 
-          <nav
-            class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
-            id="layout-navbar">
-            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-              <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
-                <i class="ti ti-menu-2 ti-md"></i>
-              </a>
-            </div>
+### Login
+Akses halaman login di `http://localhost/apoteker/auth/login`. Masukkan *username* dan *password* Anda.
 
-            <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-              <div class="navbar-nav align-items-center">
-                <div class="nav-item dropdown-style-switcher dropdown">
-                  <a
-                    class="nav-link btn btn-text-secondary btn-icon rounded-pill dropdown-toggle hide-arrow"
-                    href="javascript:void(0);"
-                    data-bs-toggle="dropdown">
-                    <i class="ti ti-md"></i>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-start dropdown-styles">
-                    <li>
-                      <a class="dropdown-item" href="javascript:void(0);" data-theme="light">
-                        <span class="align-middle"><i class="ti ti-sun me-3"></i>Light</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="javascript:void(0);" data-theme="dark">
-                        <span class="align-middle"><i class="ti ti-moon-stars me-3"></i>Dark</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="javascript:void(0);" data-theme="system">
-                        <span class="align-middle"><i class="ti ti-device-desktop-analytics me-3"></i>System</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+### Peran Pengguna
+Setelah login, Anda akan diarahkan ke dashboard sesuai peran Anda. Navigasi sidebar akan menyesuaikan hak akses masing-masing peran.
 
-              <ul class="navbar-nav flex-row align-items-center ms-auto">
-                <!-- User -->
-                <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                  <a
-                    class="nav-link dropdown-toggle hide-arrow p-0"
-                    href="javascript:void(0);"
-                    data-bs-toggle="dropdown">
-                    <div class="avatar avatar-online">
-                      <img src="assets/img/avatars/1.png" alt class="rounded-circle" />
-                    </div>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                      <a class="dropdown-item mt-0" href="#">
-                        <div class="d-flex align-items-center">
-                          <div class="flex-shrink-0 me-2">
-                            <div class="avatar avatar-online">
-                              <img src="assets/img/avatars/1.png" alt class="rounded-circle" />
-                            </div>
-                          </div>
-                          <div class="flex-grow-1">
-                            <h6 class="mb-0">John Doe</h6>
-                            <small class="text-muted">Admin</small>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li>
-                      <div class="dropdown-divider my-1 mx-n2"></div>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="ti ti-user me-3 ti-md"></i><span class="align-middle">My Profile</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="ti ti-settings me-3 ti-md"></i><span class="align-middle">Settings</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <span class="d-flex align-items-center align-middle">
-                          <i class="flex-shrink-0 ti ti-file-dollar me-3 ti-md"></i>
-                          <span class="flex-grow-1 align-middle">Billing</span>
-                          <span class="flex-shrink-0 badge bg-danger d-flex align-items-center justify-content-center"
-                            >4</span
-                          >
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <div class="dropdown-divider my-1 mx-n2"></div>
-                    </li>
-                    <li>
-                      <div class="d-grid px-2 pt-2 pb-1">
-                        <a class="btn btn-sm btn-danger d-flex" href="javascript:void(0);">
-                          <small class="align-middle">Logout</small>
-                          <i class="ti ti-logout ms-2 ti-14px"></i>
-                        </a>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
-                <!--/ User -->
-              </ul>
-            </div>
-          </nav>
+## Fitur Unggulan
 
-          <!-- / Navbar -->
+- **Manajemen Peran (Role-Based Access Control):** Hak akses yang terdefinisi dengan jelas untuk Admin, Apoteker, dan Kasir.
+- **QR Code Dinamis:**
+  - Setiap obat memiliki QR Code unik yang dapat dipindai.
+  - Memindai QR Code akan mengarahkan ke halaman informasi obat publik (tanpa perlu login) yang menampilkan detail, dosis, peringatan, dan tanggal kedaluwarsa.
+  - Membantu Apoteker dan Kasir dalam pencarian obat dan pengurangan stok yang efisien.
+- **Transaksi Penjualan Interaktif:**
+  - Proses penjualan yang cepat dengan scan QR Code langsung ke keranjang.
+  - Penghitungan total dan kembalian otomatis.
+  - Cetak struk instan setelah pembayaran.
+- **Pelacakan Stok Komprehensif:**
+  - Pemantauan stok real-time, obat menipis, dan obat kadaluarsa.
+  - Pencatatan detail histori stok masuk.
+- **Laporan & Audit:**
+  - Laporan penjualan dan obat masuk yang dapat difilter dan diekspor ke PDF.
+  - Log aktivitas pengguna untuk keamanan dan audit sistem.
 
-          <!-- Content wrapper -->
-          <div class="content-wrapper">
-            <!-- Content -->
+## Kontributor
+- [Rahmat Mulia] - Inisiator & Pengembang Utama
 
-            <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="py-4 mb-6">Page 1</h4>
-              <p>
-                Sample page.<br />For more layout options, <a href="" target="_blank" class="fw-medium"></a> refer
-                <a
-                  href="https://demos.pixinvent.com/vuexy-html-admin-template/documentation//layouts.html"
-                  target="_blank"
-                  class="fw-medium"
-                  >Layout docs</a
-                >.
-              </p>
-            </div>
-            <!-- / Content -->
+## Lisensi
+Aplikasi ini bersifat sumber terbuka dan dilisensikan di bawah [Sebutkan Lisensi Anda, misal: MIT License].
 
-            <!-- Footer -->
-            <footer class="content-footer footer bg-footer-theme">
-              <div class="container-xxl">
-                <div
-                  class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
-                  <div class="text-body">
-                    ©
-                    <script>
-                      document.write(new Date().getFullYear());
-                    </script>
-                    , made with ❤️ by <a href="https://pixinvent.com" target="_blank" class="footer-link">Pixinvent</a>
-                  </div>
-                  <div class="d-none d-lg-inline-block">
-                    <a
-                      href="https://demos.pixinvent.com/vuexy-html-admin-template/documentation/"
-                      target="_blank"
-                      class="footer-link me-4"
-                      >Documentation</a
-                    >
-                  </div>
-                </div>
-              </div>
-            </footer>
-            <!-- / Footer -->
-
-            <div class="content-backdrop fade"></div>
-          </div>
-          <!-- Content wrapper -->
-        </div>
-        <!-- / Layout page -->
-      </div>
-
-      <!-- Overlay -->
-      <div class="layout-overlay layout-menu-toggle"></div>
-
-      <!-- Drag Target Area To SlideIn Menu On Small Screens -->
-      <div class="drag-target"></div>
-    </div>
-    <!-- / Layout wrapper -->
-
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
-
-    <script src="assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="assets/vendor/libs/popper/popper.js"></script>
-    <script src="assets/vendor/js/bootstrap.js"></script>
-    <script src="assets/vendor/libs/node-waves/node-waves.js"></script>
-    <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="assets/vendor/libs/hammer/hammer.js"></script>
-
-    <script src="assets/vendor/js/menu.js"></script>
-
-    <!-- endbuild -->
-
-    <!-- Vendors JS -->
-
-    <!-- Main JS -->
-    <script src="assets/js/main.js"></script>
-
-    <!-- Page JS -->
-  </body>
-</html>
+---
