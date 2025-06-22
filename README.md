@@ -205,6 +205,6 @@ Setelah login, Anda akan diarahkan ke dashboard sesuai peran Anda. Navigasi side
 - [Rahmat Mulia] - Inisiator & Pengembang Utama
 
 ## Lisensi
-Aplikasi ini bersifat sumber terbuka dan dilisensikan di bawah [Sebutkan Lisensi Anda, misal: MIT License].
+Aplikasi ini bersifat sumber terbuka dan dilisensikan
 
 ---
